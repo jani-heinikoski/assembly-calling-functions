@@ -9,7 +9,7 @@
 # Function Two
 func_two:
     # Prologue
-    pushq   %rbp        # Save old %rbp
+    pushq   %rbp        # Save old %rbp + align stack on 16-byte boundary
     movq    %rsp, %rbp  # Base pointer is set to the address of stack pointer
 
     # Write hello world to stdout
@@ -30,7 +30,7 @@ func_one:
     # Prologue
     pushq   %rbp        # Save old %rbp
     movq    %rsp, %rbp  # Base pointer is set to the address of stack pointer
-    subq    $8, %rsp    # Allocate stack space for return address
+    subq    $8, %rsp    # Allocate stack space for return address + align stack on 16-bytes
 
     # Call func_two
     leaq    return_from_two(%rip), %rax     # Load return address
@@ -46,6 +46,10 @@ func_one:
 
 
 _start:
+    # Note that _start does not need a prologue where we save rbp
+    # because we are not using the C standard library.
+    # The stack is already aligned on a 16-byte boundary by the ELF loader.
+
     # Call func_one
     leaq    return_from_one(%rip), %rax 
     pushq   %rax                          # Push return address onto stack

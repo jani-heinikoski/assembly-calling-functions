@@ -1,0 +1,23 @@
+# https://sequencediagram.org/
+
+title calling_functions.s
+
+_start->_start:push ret addr
+_start->func_one:jmp func_one
+
+func_one->func_one:push rbp
+func_one->func_one:push ret addr
+func_one->func_two:jmp func_two
+
+func_two->func_two:push rbp
+func_two->func_two:print hello world
+func_two->func_two:drop sp to bp
+func_two->func_two:pop rbp
+
+
+func_one<-func_two:jmp ret addr
+func_one->func_one:drop sp to bp
+func_one->func_one:pop rbp
+
+_start<-func_one:jmp ret addr
+_start->_start:syscall exit

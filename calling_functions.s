@@ -53,6 +53,6 @@ _start:
     return_from_one:
 
     # Exit syscall
-    movq $60, %rax   # syscall: exit
-    xorq %rdi, %rdi  # status: 0
-    syscall          # call kernel
+    movq    $60, %rax   # syscall number 60 is exit https://github.com/torvalds/linux/blob/master/arch/x86/entry/syscalls/syscall_64.tbl
+    xorq    %rdi, %rdi  # status code (first arg.) is 0
+    syscall             # call kernel

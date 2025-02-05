@@ -9,7 +9,7 @@
 # Function Two
 func_two:
     # Prologue
-    pushq   %rbp        # Save old %rbp + align stack on 16-byte boundary
+    pushq   %rbp        # Save old %rbp + aligns stack on 16-byte boundary
     movq    %rsp, %rbp  # Base pointer is set to the address of stack pointer
 
     # Write hello world to stdout
@@ -28,13 +28,12 @@ func_two:
 # Function One
 func_one:
     # Prologue
-    pushq   %rbp        # Save old %rbp
+    pushq   %rbp        # Save old %rbp + aligns stack on 16-byte boundary
     movq    %rsp, %rbp  # Base pointer is set to the address of stack pointer
-    subq    $8, %rsp    # Allocate stack space for return address + align stack on 16-bytes
 
     # Call func_two
     leaq    return_from_two(%rip), %rax     # Load return address
-    pushq   %rax                            # Push return address onto stack
+    pushq   %rax                            # Push return address onto stack (misaligns stack)
     jmp     func_two                        # Jump to function
     return_from_two:
 
